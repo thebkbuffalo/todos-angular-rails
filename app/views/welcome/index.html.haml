@@ -1,0 +1,42 @@
+%section#todoapp{"ng-controller" => "TodoCtrl"}
+  %header#header
+    %h1 todos
+    %form#todo-form{"ng-submit" => "addTodo()"}
+      %input#new-todo{:autofocus => "", "ng-model" => "newTodo", :placeholder => "What needs to be done?"}/
+  %section#main{"ng-cloak" => "", "ng-show" => "todos.length"}
+    %input#toggle-all{"ng-click" => "markAll(allChecked)", "ng-model" => "allChecked", :type => "checkbox"}/
+    %label{:for => "toggle-all"} Mark all as complete
+    %ul#todo-list
+      %li{"ng-class" => "{completed: todo.completed, editing: todo == editedTodo}", "ng-repeat" => "todo in todos | filter:statusFilter"}
+        .view
+          %input.toggle{"ng-change" => "todoCompleted(todo)", "ng-model" => "todo.completed", :type => "checkbox"}/
+          %label{"ng-dblclick" => "editTodo(todo)"} {{todo.title}}
+          %button.destroy{"ng-click" => "removeTodo(todo)"}
+        %form{"ng-submit" => "doneEditing(todo)"}
+          %input.edit{"ng-model" => "todo.title", "todo-blur" => "doneEditing(todo)", "todo-focus" => "todo == editedTodo"}/
+  %footer#footer{"ng-cloak" => "", "ng-show" => "todos.length"}
+    %span#todo-count
+      %strong {{remainingCount}}
+      %ng-pluralize{:count => "remainingCount", :when => "{ one: 'item left', other: 'items left' }"}
+    %ul#filters
+      %li
+        %a{:href => "#/", "ng-class" => "{selected: location.path() == '/'} "} All
+      %li
+        %a{:href => "#/active", "ng-class" => "{selected: location.path() == '/active'}"} Active
+      %li
+        %a{:href => "#/completed", "ng-class" => "{selected: location.path() == '/completed'}"} Completed
+    %button#clear-completed{"ng-click" => "clearCompletedTodos()", "ng-show" => "remainingCount < todos.length"} Clear completed ({{todos.length - remainingCount}})
+%footer#info
+  %p Double-click to edit a todo
+  %p
+    Credits:
+    = succeed "," do
+      %a{:href => "http://twitter.com/cburgdorf"} Christoph Burgdorf
+    = succeed "," do
+      %a{:href => "http://ericbidelman.com"} Eric Bidelman
+    %a{:href => "http://jacobmumm.com"} Jacob Mumm
+    and
+    %a{:href => "http://igorminar.com"} Igor Minar
+  %p
+    Part of
+    %a{:href => "http://todomvc.com"} TodoMVC

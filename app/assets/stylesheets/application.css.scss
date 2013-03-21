@@ -9,6 +9,9 @@
  * compiled file, but it's generally better to create a new file per style scope.
  *
  *= require_self
+ *= require bootstrap/bootstrap.min.css
+ *= require bootstrap/bootstrap-responsive.min.css
+ *= require todomvc-common/base
  *= require_tree .
 */
 .brand {
@@ -35,3 +38,6 @@ ul.nav li {
   background-color: #FCC;
   border: solid 1px #C66;
 }
+
+body { padding-top: 60px; }
+.center {text-align: center;}
