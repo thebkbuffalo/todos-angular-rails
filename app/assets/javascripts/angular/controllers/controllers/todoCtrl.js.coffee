@@ -1,35 +1,36 @@
-#global todomvc 
-"use strict"
-
 ###
 The main controller for the app. The controller:
 - retrieves and persist the model via the todoStorage service
 - exposes the model to the template and provides event handlers
 ###
-todomvc.controller "TodoCtrl", TodoCtrl = ($scope, $location, todoStorage, filterFilter) ->
-  todos = $scope.todos = todoStorage.get()
+todomvc.controller "TodoCtrl", TodoCtrl = ($scope, $location, Todo, filterFilter) ->
   $scope.newTodo = ""
-  $scope.remainingCount = filterFilter(todos,
-    completed: false
-  ).length
   $scope.editedTodo = null
   $location.path "/"  if $location.path() is ""
   $scope.location = $location
   $scope.$watch "location.path()", (path) ->
     $scope.statusFilter = (if (path is "/active") then completed: false else (if (path is "/completed") then completed: true else null))
 
+  $scope.retrieveTodos = ->
+    $scope.todos = Todo.query {}
+  $scope.retrieveTodos()
+
   $scope.$watch "remainingCount == 0", (val) ->
     $scope.allChecked = val
 
+  $scope.$watch "todos", ->
+    $scope.remainingCount = filterFilter($scope.todos,
+      completed: false
+    ).length
+  , true
+
   $scope.addTodo = ->
     return  if $scope.newTodo.length is 0
-    todos.push
+    $scope.todos.push Todo.save
       title: $scope.newTodo
       completed: false
 
-    todoStorage.put todos
     $scope.newTodo = ""
-    $scope.remainingCount++
 
   $scope.editTodo = (todo) ->
     $scope.editedTodo = todo
@@ -37,30 +38,21 @@ todomvc.controller "TodoCtrl", TodoCtrl = ($scope, $location, todoStorage, filte
   $scope.doneEditing = (todo) ->
     $scope.editedTodo = null
     $scope.removeTodo todo  unless todo.title
-    todoStorage.put todos
+    Todo.save { id: todo.id }, todo
 
   $scope.removeTodo = (todo) ->
-    $scope.remainingCount -= (if todo.completed then 0 else 1)
-    todos.splice todos.indexOf(todo), 1
-    todoStorage.put todos
+    $scope.todos.splice $scope.todos.indexOf(todo), 1
+    todo.$remove()
 
   $scope.todoCompleted = (todo) ->
-    if todo.completed
-      $scope.remainingCount--
-    else
-      $scope.remainingCount++
-    todoStorage.put todos
+    todo.$update()
 
   $scope.clearCompletedTodos = ->
-    $scope.todos = todos = todos.filter((val) ->
-      not val.completed
-    )
-    todoStorage.put todos
+    $scope.todos.filter (val) ->
+      val.completed
+    .forEach (todo) ->
+      $scope.removeTodo todo
 
   $scope.markAll = (completed) ->
-    todos.forEach (todo) ->
+    $scope.todos.forEach (todo) ->
       todo.completed = completed
-
-    $scope.remainingCount = (if completed then 0 else todos.length)
-    todoStorage.put todos
-

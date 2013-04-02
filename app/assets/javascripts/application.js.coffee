@@ -14,6 +14,13 @@
 #= require angular
 #= require angular-resource
 #= require todomvc-common/base
-#= require app
+#= require_self
 #= require_tree ./angular
 #= require_tree .
+
+###
+The main TodoMVC app module
+
+@type {angular.Module}
+###
+@todomvc = angular.module("todomvc", ['ngResource'])
