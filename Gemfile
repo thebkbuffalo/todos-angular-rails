@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
-gem 'rails', '3.2.13'
+gem 'rails', '4.0.0'
 
 group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+  gem 'sass-rails',   '~> 5.0.3'
+  gem 'coffee-rails', '~> 4.1.0'
   gem 'uglifier', '>= 1.0.3'
   gem "haml-rails", ">= 0.4"
   gem "therubyracer", ">= 0.12.1", :platform => :ruby, :require => "v8"
@@ -24,4 +24,4 @@ gem 'pg', group: [:database, :production]
 
 gem "rspec-rails", ">= 2.12.2", :group => [:development, :test]
 gem "factory_girl_rails", ">= 4.2.0", :group => [:development, :test]
-gem "simple_form", ">= 2.1.0"
+gem "simple_form", ">= 3.1.0"
