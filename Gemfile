@@ -19,7 +19,7 @@ group :development do
   gem "html2haml", ">= 1.0.1"
 end
 
-gem 'sqlite3', group: [:database, :development, :test]
+# gem 'sqlite3', group: [:database, :development, :test]
 gem 'pg', group: [:database, :production]
 
 gem "rspec-rails", ">= 2.12.2", :group => [:development, :test]
