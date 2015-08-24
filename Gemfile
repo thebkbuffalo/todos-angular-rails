@@ -6,7 +6,7 @@ group :assets do
   gem 'coffee-rails', '~> 3.2.1'
   gem 'uglifier', '>= 1.0.3'
   gem "haml-rails", ">= 0.4"
-  gem "therubyracer", ">= 0.11.3", :platform => :ruby, :require => "v8"
+  gem "therubyracer", ">= 0.12.1", :platform => :ruby, :require => "v8"
   #gem 'jquery-rails'
   gem 'angular-rails' # For angular assets
   gem 'angularjs_scaffold' # For angular scaffolds
